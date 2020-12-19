@@ -90,7 +90,69 @@ public class Singletondemo3 {
     }
 
 }
+```
 
+```java
+// 方式四
+package local.design.singleton;
+
+public class Singletondemo4 {
+
+    /*
+      定义私有无参构造
+       */
+    private Singletondemo4() {
+    }
+
+    /*
+    私有静态属性
+     */
+    private static Singletondemo4 instance;
+
+    /**
+     * 加上 synchronized同步锁，防止线程抢占导致的null判断失效
+     * todo:这样做效率不好，多线程下会导致排队情况
+     *
+     * @return
+     */
+    public static synchronized Singletondemo4 getInstance() {
+        if (instance == null) {
+            instance = new Singletondemo4();
+        }
+        return instance;
+    }
+
+}
+```
+```java
+// 方式五
+package local.design.singleton;
+
+public class Singletondemo5 {
+    /*
+  定义私有无参构造
+   */
+    private Singletondemo5() {
+    }
+
+    /*
+    私有静态属性
+     */
+    private static Singletondemo5 instance;
+
+    public static Singletondemo5 getInstance() {
+        if (instance == null) {
+            /*
+            多线程情况下，如果第一个进程进入null区间，则对Singletondemo5的class字节文件加上同步锁，保证唯一性
+             */
+            synchronized (Singletondemo5.class) {
+                instance = new Singletondemo5();
+            }
+        }
+        return instance;
+    }
+
+}
 
 ```
 
@@ -98,22 +160,33 @@ public class Singletondemo3 {
 // 客户端调用
 package local;
 
-import local.design.singleton.Singletondemo1;
+import local.design.singleton.*;
 
 public class Client {
     public static void main(String[] args) {
-              //方式一
         Singletondemo1 singletondemo11 = Singletondemo1.getInstance();
         Singletondemo1 singletondemo12 = Singletondemo1.getInstance();
         System.out.println(singletondemo11 == singletondemo12);
+        System.out.println("-----------------------------------");
         //方式二
         Singletondemo2 singletondemo21 = Singletondemo2.getInstance();
         Singletondemo2 singletondemo22 = Singletondemo2.getInstance();
         System.out.println(singletondemo21 == singletondemo22);
+        System.out.println("-----------------------------------");
         //方式三
         Singletondemo3 singletondemo31 = Singletondemo3.getInstance();
         Singletondemo3 singletondemo32 = Singletondemo3.getInstance();
         System.out.println(singletondemo31 == singletondemo32);
+        System.out.println("-----------------------------------");
+        //方式四
+        Singletondemo4 singletondemo41 = Singletondemo4.getInstance();
+        Singletondemo4 singletondemo42 = Singletondemo4.getInstance();
+        System.out.println(singletondemo41 == singletondemo42);
+        System.out.println("-----------------------------------");
+        //方式无
+        Singletondemo5 singletondemo51 = Singletondemo5.getInstance();
+        Singletondemo5 singletondemo52 = Singletondemo5.getInstance();
+        System.out.println(singletondemo51 == singletondemo52);
     }
 }
 ```

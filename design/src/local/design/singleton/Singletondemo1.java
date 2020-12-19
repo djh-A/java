@@ -13,6 +13,14 @@ public class Singletondemo1 {
      */
     private static Singletondemo1 instance = new Singletondemo1();
 
+    /**
+     * @desc:
+     * @params: []
+     * @return: local.design.singleton.Singletondemo1
+     * @Author: djh
+     * @date: 2020/12/19
+     */
+
     public static Singletondemo1 getInstance() {
         return instance;
     }
